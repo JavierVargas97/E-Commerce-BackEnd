@@ -1,10 +1,18 @@
-const router = require('express').Router();
-const categoryRoutes = require('./category-routes');
-const productRoutes = require('./product-routes');
-const tagRoutes = require('./tag-routes');
+const seedCategories = require('./category-seeds');
+const seedProducts = require('./product-seeds');
+const seedTags = require('./tag-seeds');
+const seedProductTags = require('./product-tag-seeds');
+const sequelize = require('../config/connection');
 
-router.use('/categories', categoryRoutes);
-router.use('/products', productRoutes);
-router.use('/tags', tagRoutes);
 
-module.exports = router;
+
+const seedAll = async () => {
+
+    await sequelize.sync({ force: true });
+    await seedCategories();
+    await seedProducts();
+    await seedTags();
+    await seedProductTags();
+    process.exit(0);
+};
+seedAll();
